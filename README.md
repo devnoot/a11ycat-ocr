@@ -1,11 +1,11 @@
 # a11ycat-ocr
 
-## OCR PDF documents in Node.js 🐱
+**OCR PDF documents in Node.js 🐱**
 
 ## Dependencies
 * [GraphicsMagick](http://www.graphicsmagick.org/) 
 
->`a11ycat-ocr `expects the graphicsmagick binary `gm` to exist in `$PATH`
+>IMPORTANT: `a11ycat-ocr` expects the graphicsmagick binary `gm` to exist in your `PATH`
 
 ## Quick Start 
 
