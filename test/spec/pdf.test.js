@@ -2,7 +2,7 @@ const { readdirSync, readFileSync } = require('fs')
 const { join } = require('path')
 const chai = require('chai')
 const expect = chai.expect
-const { PDF } = require('../../dist/pdf')
+const { PDF } = require('../../dist/classes/pdf.class')
 
 describe('PDF', () => {
 

@@ -4,6 +4,10 @@ import { basename, join } from 'path'
 import { readdirSync, writeFileSync } from 'fs-extra'
 import { bold, green, yellow, redBright } from 'chalk'
 
+/**
+ * The A11ycatOCR OCR class provides methods to convert and OCR a PDF
+ */
+
 class OCR {
 
     /**
@@ -11,7 +15,7 @@ class OCR {
      * @param destinationDir The path to save the images. Defaults to ./
      * @returns Returns a promise resolving in an array of filepaths. 
      */
-    convertPdfToImages(pdfPath: string, destinationDir?: string): Promise<string[]> {
+    public convertPdfToImages(pdfPath: string, destinationDir?: string): Promise<string[]> {
         return new Promise((resolve, reject) => {
 
             async function convert() {
@@ -34,7 +38,7 @@ class OCR {
 
                     })
                     proc.on('exit', (code) => {
-                        if (code > 0) {
+                        if (code && code > 0) {
 
                             if (process.env.NODE_ENV !== 'test') {
                                 console.log(redBright({ proc: JSON.stringify(proc), code }))
@@ -68,7 +72,7 @@ class OCR {
      * @param imagePath The image path to perform OCR recognition on
      * @returns Returns a promise resolving in the OCR information
      */
-    recognize(imagePath: string): Promise<any> {
+    public recognize(imagePath: string): Promise<any> {
         return new Promise(async (resolve, reject) => {
             try {
 

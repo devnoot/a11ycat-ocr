@@ -3,7 +3,7 @@ const { join } = require('path')
 const chai = require('chai')
 const expect = chai.expect
 
-const { OCR } = require('../../dist/ocr')
+const { OCR } = require('../../dist/classes/ocr.class')
 
 describe('OCR Class', () => {
 

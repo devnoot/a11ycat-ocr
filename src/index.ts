@@ -1,5 +1,5 @@
-import { PDF } from './pdf'
-import { OCR } from './ocr'
+import { PDF } from './classes/pdf.class'
+import { OCR } from './classes/ocr.class'
 
 const AllycatOCR = {
     OCR: OCR,

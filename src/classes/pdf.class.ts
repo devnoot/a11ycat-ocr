@@ -12,6 +12,9 @@ interface PDFOptionsBuffer extends PDFOptions {
     data: Buffer
 }
 
+/**
+ * The A11ycatOCR PDF class provides methods to interface with a PDF
+ */
 class PDF {
 
     source: string|Buffer
@@ -54,21 +57,31 @@ class PDF {
             if (!this.isLoaded) {
                 reject('PDF is not loaded yet!')
             }
-            this.documentProxy.getPage(pageNumber)
-                .then(page => resolve(page), error => reject(error))
+
+            if (this.documentProxy) {
+                this.documentProxy.getPage(pageNumber)
+                    .then(page => resolve(page), error => reject(error))
+            } else {
+                throw new Error('documentProxy is undefined')
+            }
+
         })
     }
 
     meta(): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.documentProxy.getMetadata().then(
-                metadata => {
-                    resolve(metadata)
-                },
-                error => {
-                    reject(error)
-                }
-            )
+
+            if (this.documentProxy) {
+                this.documentProxy.getMetadata().then(
+                    metadata => {
+                        resolve(metadata)
+                    },
+                    error => {
+                        reject(error)
+                    }
+                )
+            }
+
         })
     }
 
@@ -89,11 +102,18 @@ class PDF {
         if (!this.isLoaded) {
             console.error('PDF is not loaded yet!')
         }
-        return this.documentProxy.numPages
+        if (this.documentProxy) {
+            return this.documentProxy.numPages
+        } else {
+            throw new Error('documentProxy is undefined')
+        }
+        
     }
 
     destroy(): void {
-        this.documentProxy.destroy()
+        if (this.documentProxy) {
+            this.documentProxy.destroy()
+        }
     }
 }
 
