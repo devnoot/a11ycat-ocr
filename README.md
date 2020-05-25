@@ -2,10 +2,14 @@
 
 **OCR PDF documents in Node.js 🐱**
 
+
+
 ## Dependencies
 * [GraphicsMagick](http://www.graphicsmagick.org/) 
 
 >IMPORTANT: `a11ycat-ocr` expects the graphicsmagick binary `gm` to exist in your `PATH`
+
+
 
 ## Quick Start 
 
@@ -49,4 +53,16 @@ async function main() {
     }
 }
 
+```
+
+
+
+## Tests
+
+Tests are located in `test/spec`. Tests should use data from `test/data/images` and `test/data/pdfs`
+
+Because there are some large PDFs in the test dataset, this can take a very long time depending on the host computer.
+
+```
+npm test
 ```
