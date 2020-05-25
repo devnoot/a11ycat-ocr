@@ -1,10 +1,8 @@
-const assert = require('assert')
 const { readdirSync, readFileSync } = require('fs')
 const { join } = require('path')
 const chai = require('chai')
-const should = chai.should()
 const expect = chai.expect
-const { PDF } = require('../../dist/index')
+const { PDF } = require('../../dist/pdf')
 
 describe('PDF', () => {
 

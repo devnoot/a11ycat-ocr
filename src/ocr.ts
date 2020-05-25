@@ -33,14 +33,14 @@ class OCR {
                     proc.on('disconnect', () => {
 
                     })
-                    proc.on('exit', (code, signal) => {
+                    proc.on('exit', (code) => {
                         if (code > 0) {
 
                             if (process.env.NODE_ENV !== 'test') {
-                                console.log(redBright({ proc, code, signal }))
+                                console.log(redBright({ proc: JSON.stringify(proc), code }))
                             }
 
-                            reject(new Error(`Could not process file \n${pdfPath}\nReceived exit code ${code}\n${signal}`))
+                            reject(new Error(`Could not process file \n${pdfPath}\nReceived exit code ${code}`))
                         }
                         const createdFiles = readdirSync(dest).map(f => join(dest, f))
                         resolve(createdFiles)

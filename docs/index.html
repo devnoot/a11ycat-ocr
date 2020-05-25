@@ -90,18 +90,21 @@ npm build</code></pre>
 				<ol start="2">
 					<li>Include the OCR class in your project</li>
 				</ol>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { OCR } <span class="hljs-keyword">from</span> <span class="hljs-string">'./dist/index'</span>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { AllycatOCR } <span class="hljs-keyword">from</span> <span class="hljs-string">'./dist/index'</span>
 
-<span class="hljs-keyword">const</span> ocr = <span class="hljs-keyword">new</span> OCR()
+<span class="hljs-keyword">const</span> ocr = <span class="hljs-keyword">new</span> AllycatOCR.OCR()
 
 <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
     <span class="hljs-keyword">try</span> {
+
+        <span class="hljs-comment">// Set the path to the pdf you want to OCR</span>
+        <span class="hljs-keyword">const</span> pdfPath = <span class="hljs-string">'path/to/my/file.pdf'</span>
 
         <span class="hljs-comment">// Set a destination directory for the pdf images</span>
         <span class="hljs-keyword">const</span> destinationDir = <span class="hljs-string">'./'</span>
 
         <span class="hljs-comment">// Convert a pdf to a series of images</span>
-        <span class="hljs-keyword">const</span> generatedImages = <span class="hljs-keyword">await</span> ocr.convertPdfToImages(<span class="hljs-string">'path/to/file.pdf'</span>, destinationDir) 
+        <span class="hljs-keyword">const</span> generatedImages = <span class="hljs-keyword">await</span> ocr.convertPdfToImages(pdfPath, destinationDir) 
 
         <span class="hljs-comment">// Run OCR on one of the generated images</span>
         <span class="hljs-keyword">const</span> { data } = <span class="hljs-keyword">await</span> ocr.recognize(destinationDir + generatedImages[<span class="hljs-number">0</span>])
@@ -111,12 +114,14 @@ npm build</code></pre>
         <span class="hljs-comment">// Log out the OCR'd text.</span>
         <span class="hljs-built_in">console</span>.log(foundText)
 
-        <span class="hljs-comment">// The OCR'd text will also be saved next to the source image        </span>
+        <span class="hljs-comment">// The OCR'd text will also be saved next to the source image</span>
 
     } <span class="hljs-keyword">catch</span> (error) {
         <span class="hljs-keyword">throw</span> error
     }
 }
+
+main()
 </code></pre>
 				<a href="#tests" id="tests" style="color: inherit; text-decoration: none;">
 					<h2>Tests</h2>
@@ -131,6 +136,9 @@ npm build</code></pre>
 				<ul>
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_index_.html">&quot;index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_ocr_.html">&quot;ocr&quot;</a>
@@ -151,6 +159,9 @@ npm build</code></pre>
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>

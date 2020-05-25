@@ -25,18 +25,21 @@ npm build
 2. Include the OCR class in your project
 
 ```javascript
-import { OCR } from './dist/index'
+import { AllycatOCR } from './dist/index'
 
-const ocr = new OCR()
+const ocr = new AllycatOCR.OCR()
 
 async function main() {
     try {
+
+        // Set the path to the pdf you want to OCR
+        const pdfPath = 'path/to/my/file.pdf'
 
         // Set a destination directory for the pdf images
         const destinationDir = './'
 
         // Convert a pdf to a series of images
-        const generatedImages = await ocr.convertPdfToImages('path/to/file.pdf', destinationDir) 
+        const generatedImages = await ocr.convertPdfToImages(pdfPath, destinationDir) 
        
         // Run OCR on one of the generated images
         const { data } = await ocr.recognize(destinationDir + generatedImages[0])
@@ -46,12 +49,14 @@ async function main() {
         // Log out the OCR'd text.
         console.log(foundText)
 
-        // The OCR'd text will also be saved next to the source image        
+        // The OCR'd text will also be saved next to the source image
 
     } catch (error) {
         throw error
     }
 }
+
+main()
 
 ```
 

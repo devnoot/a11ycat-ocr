@@ -1,11 +1,9 @@
-const assert = require('assert')
 const { mkdirpSync, readdirSync, rmdirSync } = require('fs-extra')
 const { join } = require('path')
 const chai = require('chai')
-const should = chai.should()
 const expect = chai.expect
 
-const { OCR } = require('../../dist/index')
+const { OCR } = require('../../dist/ocr')
 
 describe('OCR Class', () => {
 

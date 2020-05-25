@@ -1,4 +1,9 @@
 import { PDF } from './pdf'
 import { OCR } from './ocr'
 
-export { PDF, OCR }
+const AllycatOCR = {
+    OCR: OCR,
+    PDF: PDF
+}
+
+export { AllycatOCR }
