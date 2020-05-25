@@ -2,3 +2,5 @@ node_modules
 dist/
 *.traineddata
 local/
+tmp/
+*.DS_Store

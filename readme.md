@@ -25,7 +25,8 @@ npm build
 2. Include the OCR class in your project
 
 ```javascript
-import { AllycatOCR } from './dist/index'
+const { AllycatOCR } = require('./dist/index')
+const { resolve } = require('path')
 
 const ocr = new AllycatOCR.OCR()
 
@@ -33,10 +34,10 @@ async function main() {
     try {
 
         // Set the path to the pdf you want to OCR
-        const pdfPath = 'path/to/my/file.pdf'
+        const pdfPath = resolve('./test/data/pdfs/set1/Modeling High-Frequency Limit Order Book Dynamics with Support Vector Machines.pdf')
 
         // Set a destination directory for the pdf images
-        const destinationDir = './'
+        const destinationDir = resolve('./tmp')
 
         // Convert a pdf to a series of images
         const generatedImages = await ocr.convertPdfToImages(pdfPath, destinationDir) 

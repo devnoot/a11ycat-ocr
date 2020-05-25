@@ -5,12 +5,14 @@ import { readdirSync, writeFileSync } from 'fs-extra'
 import { bold, green, yellow, redBright } from 'chalk'
 
 /**
- * The A11ycatOCR OCR class provides methods to convert and OCR a PDF
+ * The OCR class provides methods to convert and OCR a PDF
  */
 
 class OCR {
 
     /**
+     * Converts a PDF to a series of images
+     * 
      * @param pdfPath The path to the pdf you want to convert
      * @param destinationDir The path to save the images. Defaults to ./
      * @returns Returns a promise resolving in an array of filepaths. 
@@ -26,17 +28,22 @@ class OCR {
 
                     const gmArgs = [
                         'convert',
-                        //'-density', '300',
-                        src, 
+                        '-density', '100',
+                        src,
                         '+adjoin',
                         join(dest, outFile)
                     ]
 
                     const proc = spawn('gm', gmArgs)
-
-                    proc.on('disconnect', () => {
-
+    
+                    proc.stdout.on('data', data => {
+                        console.log(data.toString())
                     })
+
+                    proc.stderr.on('data', data => {
+                        console.error(data.toString())
+                    })
+
                     proc.on('exit', (code) => {
                         if (code && code > 0) {
 
@@ -44,7 +51,7 @@ class OCR {
                                 console.log(redBright({ proc: JSON.stringify(proc), code }))
                             }
 
-                            reject(new Error(`Could not process file \n${pdfPath}\nReceived exit code ${code}`))
+                            throw new Error(`Could not process file \n${pdfPath}\nReceived exit code ${code}`)
                         }
                         const createdFiles = readdirSync(dest).map(f => join(dest, f))
                         resolve(createdFiles)
@@ -56,7 +63,7 @@ class OCR {
                             console.error(redBright({ proc }))
                         }
 
-                        reject(error)
+                        throw error
                     })
 
                 } catch (error) {
@@ -69,6 +76,8 @@ class OCR {
     }
 
     /**
+     * Performs OCR on an image
+     * 
      * @param imagePath The image path to perform OCR recognition on
      * @returns Returns a promise resolving in the OCR information
      */

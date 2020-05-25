@@ -13,7 +13,7 @@ interface PDFOptionsBuffer extends PDFOptions {
 }
 
 /**
- * The A11ycatOCR PDF class provides methods to interface with a PDF
+ * The PDF class provides methods to interface with a PDF
  */
 class PDF {
 
@@ -29,6 +29,9 @@ class PDF {
         this.isLoaded = false
     }
 
+    /**
+     * Loads the PDF
+     */
     load(): Promise<PDFDocumentProxy> {
         return new Promise((resolve, reject) => {
 
@@ -52,6 +55,11 @@ class PDF {
         })
     }
 
+    /**
+     * Returns a page of the loaded PDF
+     * 
+     * @param pageNumber The page number in the loaded PDF
+     */
     page(pageNumber: number): Promise<PDFPageProxy> {
         return new Promise((resolve, reject) => {
             if (!this.isLoaded) {
@@ -68,6 +76,9 @@ class PDF {
         })
     }
 
+    /**
+     * Returns the metadata of the loaded PDF
+     */
     meta(): Promise<any> {
         return new Promise((resolve, reject) => {
 
@@ -85,6 +96,11 @@ class PDF {
         })
     }
 
+    /**
+     * Returns page text from a page of the loaded PDF
+     * 
+     * @param pageNumber The page number in the loaded PDF
+     */
     async getPageText(pageNumber: number): Promise<string> {
         return new Promise((resolve, reject) => {
             (async () => {
@@ -98,6 +114,9 @@ class PDF {
         })
     }
 
+    /**
+     * Returns the number of pages of the loaded PDF
+     */
     pages(): number|void {
         if (!this.isLoaded) {
             console.error('PDF is not loaded yet!')
@@ -110,6 +129,9 @@ class PDF {
         
     }
 
+    /**
+     * Destroys the document proxy
+     */
     destroy(): void {
         if (this.documentProxy) {
             this.documentProxy.destroy()
