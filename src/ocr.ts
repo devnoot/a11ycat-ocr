@@ -49,7 +49,7 @@ class OCR {
                     proc.on('error', error => {
 
                         if (process.env.NODE_ENV !== 'test') {
-                            console.error(redBright({ proc }))sasd
+                            console.error(redBright({ proc }))
                         }
 
                         reject(error)
