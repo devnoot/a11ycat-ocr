@@ -5,9 +5,9 @@
 
 
 ## Dependencies
-* [GraphicsMagick](http://www.graphicsmagick.org/) 
+* [ImageMagick 7](https://imagemagick.org/) 
 
->IMPORTANT: `a11ycat-ocr` expects the graphicsmagick binary `gm` to exist in your `PATH`
+>IMPORTANT: `a11ycat-ocr` expects the ImageMagick tools to be available in your `PATH`
 
 
 
@@ -34,16 +34,18 @@ async function main() {
     try {
 
         // Set the path to the pdf you want to OCR
-        const pdfPath = resolve('./test/data/pdfs/set1/Modeling High-Frequency Limit Order Book Dynamics with Support Vector Machines.pdf')
+        const pdfPath = resolve(process.cwd() + '/test/data/pdfs/set1/Modeling High-Frequency Limit Order Book Dynamics with Support Vector Machines.pdf')
 
         // Set a destination directory for the pdf images
-        const destinationDir = resolve('./tmp')
+        const destinationDir = resolve(process.cwd() + '/tmp')
 
+        console.log('Generating images from PDF')
         // Convert a pdf to a series of images
         const generatedImages = await ocr.convertPdfToImages(pdfPath, destinationDir) 
        
+        console.log('Doing OCR on first page')
         // Run OCR on one of the generated images
-        const { data } = await ocr.recognize(destinationDir + generatedImages[0])
+        const { data } = await ocr.recognize(generatedImages[0])
 
         const foundText = data.text
 
@@ -55,6 +57,7 @@ async function main() {
     } catch (error) {
         throw error
     }
+}
 }
 
 main()
