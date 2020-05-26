@@ -14,55 +14,54 @@ class OCR {
      * Converts a PDF to a series of images
      * 
      * @param pdfPath The path to the pdf you want to convert
-     * @param destinationDir The path to save the images. Defaults to ./
+     * @param destinationDir The path to save the images
+     * @param imageMagickArgs This object can be supplied to change the default way ImageMagick converts PDFs to images.
+     * 
      * @returns Returns a promise resolving in an array of filepaths. 
      */
-    public convertPdfToImages(pdfPath: string, destinationDir?: string): Promise<string[]> {
+    public convertPdfToImages(pdfPath: string, destinationDir: string, imageMagickArgs?: string[]): Promise<string[]> {
         return new Promise((resolve, reject) => {
 
             async function convert() {
                 try {
                     const src = pdfPath
-                    const dest = destinationDir || './'
-                    const outFile = basename(pdfPath) + '-%02d' + '.tiff'
+                    const dest = destinationDir
+                    const outFile = basename(pdfPath) + '-%02d' + '.png'
 
-                    const gmArgs = [
-                        'convert',
-                        '-density', '100',
+                    const defaultImageMagickArgs = [
+                        '-density', '150',
                         src,
+                        '-fill', 'black',
+                        '-fuzz', '30%',
+                        '+opaque', '#FFFFFF',
                         '+adjoin',
                         join(dest, outFile)
                     ]
 
-                    const proc = spawn('gm', gmArgs)
+                    const args = imageMagickArgs || defaultImageMagickArgs
+                    const proc = spawn('convert', args)
     
                     proc.stdout.on('data', data => {
-                        console.log(data.toString())
+                        if (process.env.NODE_ENV !== 'test') {
+                            console.log(data.toString())
+                        }
                     })
 
                     proc.stderr.on('data', data => {
-                        console.error(data.toString())
+                        if (process.env.NODE_ENV !== 'test') {
+                            console.error(data.toString())
+                        }
                     })
 
                     proc.on('exit', (code) => {
                         if (code && code > 0) {
-
-                            if (process.env.NODE_ENV !== 'test') {
-                                console.log(redBright({ proc: JSON.stringify(proc), code }))
-                            }
-
-                            throw new Error(`Could not process file \n${pdfPath}\nReceived exit code ${code}`)
+                            reject(`\nCould not process file \n${pdfPath}\nReceived exit code ${code}`)
                         }
                         const createdFiles = readdirSync(dest).map(f => join(dest, f))
                         resolve(createdFiles)
                     })
 
                     proc.on('error', error => {
-
-                        if (process.env.NODE_ENV !== 'test') {
-                            console.error(redBright({ proc }))
-                        }
-
                         throw error
                     })
 
@@ -84,11 +83,6 @@ class OCR {
     public recognize(imagePath: string): Promise<any> {
         return new Promise(async (resolve, reject) => {
             try {
-
-                interface Task {
-                    name: string
-                    worker: string
-                }
 
                 interface TesseractMsg {
                     workerId: string
