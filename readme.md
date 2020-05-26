@@ -31,6 +31,7 @@ const { resolve } = require('path')
 const ocr = new AllycatOCR.OCR()
 
 async function main() {
+
     try {
 
         // Set the path to the pdf you want to OCR
@@ -57,7 +58,7 @@ async function main() {
     } catch (error) {
         throw error
     }
-}
+
 }
 
 main()
