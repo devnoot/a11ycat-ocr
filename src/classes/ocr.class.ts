@@ -2,7 +2,7 @@ import { createWorker } from 'tesseract.js'
 import { spawn } from 'child_process'
 import { basename, join } from 'path'
 import { readdirSync, writeFileSync } from 'fs-extra'
-import { bold, green, yellow, redBright } from 'chalk'
+import { bold, green, yellow, dim } from 'chalk'
 
 /**
  * The OCR class provides methods to convert and OCR a PDF
@@ -15,11 +15,10 @@ class OCR {
      * 
      * @param pdfPath The path to the pdf you want to convert
      * @param destinationDir The path to save the images
-     * @param imageMagickArgs This object can be supplied to change the default way ImageMagick converts PDFs to images.
      * 
      * @returns Returns a promise resolving in an array of filepaths. 
      */
-    public convertPdfToImages(pdfPath: string, destinationDir: string, imageMagickArgs?: string[]): Promise<string[]> {
+    public convertPdfToImages(pdfPath: string, destinationDir: string): Promise<string[]> {
         return new Promise((resolve, reject) => {
 
             async function convert() {
@@ -29,27 +28,26 @@ class OCR {
                     const outFile = basename(pdfPath) + '-%02d' + '.png'
 
                     const defaultImageMagickArgs = [
-                        '-density', '150',
+                        //'-density', '150',
                         src,
-                        '-fill', 'black',
-                        '-fuzz', '30%',
-                        '+opaque', '#FFFFFF',
+                        //'-fill', 'black',
+                        //'-fuzz', '30%',
+                        //'+opaque', '#FFFFFF',
                         '+adjoin',
                         join(dest, outFile)
                     ]
 
-                    const args = imageMagickArgs || defaultImageMagickArgs
-                    const proc = spawn('convert', args)
+                    const proc = spawn('convert', defaultImageMagickArgs)
     
                     proc.stdout.on('data', data => {
                         if (process.env.NODE_ENV !== 'test') {
-                            console.log(data.toString())
+                            console.log(dim(data.toString()))
                         }
                     })
 
                     proc.stderr.on('data', data => {
                         if (process.env.NODE_ENV !== 'test') {
-                            console.error(data.toString())
+                            console.error(dim(data.toString()))
                         }
                     })
 
@@ -95,7 +93,7 @@ class OCR {
                     logger: (msg: TesseractMsg) => {
                         if (process.env.NODE_ENV !== 'test') {
                             const formattedMsg = Math.round(msg.progress * 100)
-                            console.info(`${bold(msg.workerId || '**')} | ${msg.status} | ${msg.progress === 1 ? green(formattedMsg) : yellow(formattedMsg)}%`)
+                            console.info(dim(`${bold(msg.workerId || '**')} | ${msg.status} | ${msg.progress === 1 ? green(formattedMsg) : yellow(formattedMsg)}%`))
                         }
                     }
                 })

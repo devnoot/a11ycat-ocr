@@ -13,7 +13,6 @@
     "devDependencies": {
         "@types/chalk": "^2.2.0",
         "@types/fs-extra": "^9.0.1",
-        "@types/gm": "^1.18.8",
         "@types/node": "^14.0.5",
         "@types/pdfjs-dist": "^2.1.4",
         "@types/tesseract.js": "^0.0.2",
@@ -27,7 +26,6 @@
         "canvas": "^2.6.1",
         "chalk": "^4.0.0",
         "fs-extra": "^9.0.0",
-        "gm": "^1.23.1",
         "pdfjs-dist": "^2.3.200",
         "tesseract.js": "^2.1.1"
     }
