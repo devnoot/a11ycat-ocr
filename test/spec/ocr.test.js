@@ -31,7 +31,7 @@ describe('OCR Class', () => {
         mkdirpSync(tmpDir)
         const imagePaths = await ocr.convertPdfToImages(pdfPath, tmpDir)
         rmdirSync(tmpDir, { recursive: true })
-        imagePaths.should.be.an('array')
+        expect(imagePaths).to.be.an('array')
     })
 
     it('Should ocr an image', async () => {

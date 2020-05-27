@@ -21,54 +21,45 @@ class OCR {
     public convertPdfToImages(pdfPath: string, destinationDir: string): Promise<string[]> {
         return new Promise((resolve, reject) => {
 
-            async function convert() {
-                try {
-                    const src = pdfPath
-                    const dest = destinationDir
-                    const outFile = basename(pdfPath) + '-%02d' + '.png'
+            try {
+                const src = pdfPath
+                const dest = destinationDir
+                const outFile = basename(pdfPath) + '-%02d' + '.png'
 
-                    const defaultImageMagickArgs = [
-                        //'-density', '150',
-                        src,
-                        //'-fill', 'black',
-                        //'-fuzz', '30%',
-                        //'+opaque', '#FFFFFF',
-                        '+adjoin',
-                        join(dest, outFile)
-                    ]
+                const defaultImageMagickArgs = [
+                    //'-density', '150',
+                    src,
+                    //'-fill', 'black',
+                    //'-fuzz', '30%',
+                    //'+opaque', '#FFFFFF',
+                    '+adjoin',
+                    join(dest, outFile)
+                ]
 
-                    const proc = spawn('convert', defaultImageMagickArgs)
-    
-                    proc.stdout.on('data', data => {
-                        if (process.env.NODE_ENV !== 'test') {
-                            console.log(dim(data.toString()))
-                        }
-                    })
+                const proc = spawn('convert', defaultImageMagickArgs)
 
-                    proc.stderr.on('data', data => {
-                        if (process.env.NODE_ENV !== 'test') {
-                            console.error(dim(data.toString()))
-                        }
-                    })
+                proc.stdout.on('data', data => {
+                    if (process.env.NODE_ENV !== 'test') {
+                        console.log(dim(data.toString()))
+                    }
+                })
 
-                    proc.on('exit', (code) => {
-                        if (code && code > 0) {
-                            reject(`\nCould not process file \n${pdfPath}\nReceived exit code ${code}`)
-                        }
-                        const createdFiles = readdirSync(dest).map(f => join(dest, f))
-                        resolve(createdFiles)
-                    })
+                proc.on('exit', (code) => {
+                    if (code && code > 0) {
+                        throw new Error(`Could not process file \n${pdfPath}, Received exit code ${code}`)
+                    }
+                    const createdFiles = readdirSync(dest).map(f => join(dest, f))
+                    resolve(createdFiles)
+                })
 
-                    proc.on('error', error => {
-                        throw error
-                    })
+                proc.on('error', error => {
+                    throw error
+                })
 
-                } catch (error) {
-                    reject(error)
-                }
+            } catch (error) {
+                reject(error)
             }
-            convert()
-            
+
         })
     }
 
