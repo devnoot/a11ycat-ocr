@@ -71,9 +71,10 @@
 				</a>
 				<ul>
 					<li><a href="https://imagemagick.org/">ImageMagick 7</a> </li>
+					<li><a href="https://github.com/tesseract-ocr/tesseract">Tesseract OCR</a></li>
 				</ul>
 				<blockquote>
-					<p>IMPORTANT: <code>a11ycat-ocr</code> expects the ImageMagick tools to be available in your <code>PATH</code></p>
+					<p>IMPORTANT: <code>a11ycat-ocr</code> expects the ImageMagick tools, as well as the <code>tesseract</code> binary to be available in your <code>PATH</code></p>
 				</blockquote>
 				<a href="#quick-start" id="quick-start" style="color: inherit; text-decoration: none;">
 					<h2>Quick Start</h2>
@@ -94,6 +95,7 @@ npm build</code></pre>
 <span class="hljs-keyword">const</span> ocr = <span class="hljs-keyword">new</span> AllycatOCR.OCR()
 
 <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
+
     <span class="hljs-keyword">try</span> {
 
         <span class="hljs-comment">// Set the path to the pdf you want to OCR</span>
@@ -108,19 +110,14 @@ npm build</code></pre>
 
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Doing OCR on first page'</span>)
         <span class="hljs-comment">// Run OCR on one of the generated images</span>
-        <span class="hljs-keyword">const</span> { data } = <span class="hljs-keyword">await</span> ocr.recognize(generatedImages[<span class="hljs-number">0</span>])
-
-        <span class="hljs-keyword">const</span> foundText = data.text
-
-        <span class="hljs-comment">// Log out the OCR'd text.</span>
-        <span class="hljs-built_in">console</span>.log(foundText)
+        <span class="hljs-keyword">await</span> ocr.tess(generatedImages[<span class="hljs-number">0</span>])
 
         <span class="hljs-comment">// The OCR'd text will also be saved next to the source image</span>
 
     } <span class="hljs-keyword">catch</span> (error) {
         <span class="hljs-keyword">throw</span> error
     }
-}
+
 }
 
 main()
