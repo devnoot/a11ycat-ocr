@@ -1,6 +1,6 @@
 {
     "name": "a11ycat-ocr",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "source": "src/index.ts",
     "main": "dist/index.js",
     "author": "devnoot <devnoot@gmail.com>",
@@ -31,6 +31,6 @@
         "chalk": "^4.0.0",
         "fs-extra": "^9.0.0",
         "pdfjs-dist": "^2.3.200",
-        "tesseract.js": "^2.1.1"
+        "tesseract.js": "^2.1.4"
     }
 }
