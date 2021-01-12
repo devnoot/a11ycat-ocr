@@ -55,17 +55,16 @@ class OCR {
             } catch (error) {
                 reject(error)
             }
-            
+
         })
     }
 
     /**
      * Performs OCR on an image by calling Tesseract from the host system
      *
-     * IMPORTANT: This function assumes that tesseract is installed and available in $PATH
-     * This function is also NOT COMPLETE
-     *
      * @param imagePath The image path to perform OCR recognition on
+     *
+     * @returns Returns a promise resolving in the generated text file path for the provided image 
      */
 
     public tess(imagePath: string): Promise<any> {
@@ -74,29 +73,31 @@ class OCR {
 
                 const tesseractOpts = [
                     imagePath,
-                    basename(imagePath),
+                    // Save the .txt file in the same place as imagePath
+                    imagePath,
                     '-l', 'eng'
                 ]
 
                 const proc = spawn('tesseract', tesseractOpts)
 
+                proc.stdout.setEncoding('utf-8')
                 proc.stdout.on('data', data => {
-                    if (process.env.NODE_ENV !== 'test') {
-                        console.log(dim(data.toString()))
-                    }
+                    console.log(data)
                 })
 
-                proc.on('exit', (code) => {
+                proc.on('close', (code) => {
                     if (code && code > 0) {
                         reject(`Receieved error code ${code}`)
                     }
-                    resolve(`Exited with code ${code}`)
+                    // if the exit code is 0, resolve with the path of the text file
+                    resolve(imagePath + '.txt')
                 })
 
+                proc.stderr.setEncoding('utf8')
                 proc.on('error', error => {
                     throw error
                 })
-    
+
             } catch (error) {
                 reject(error)
             }
@@ -107,6 +108,7 @@ class OCR {
      * Performs OCR on an image
      * 
      * @param imagePath The image path to perform OCR recognition on
+     *
      * @returns Returns a promise resolving in the OCR information
      */
     public recognize(imagePath: string): Promise<any> {

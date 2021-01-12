@@ -2,14 +2,12 @@
 
 **OCR PDF documents in Node.js 🐱**
 
-
-
 ## Dependencies
 * [ImageMagick 7](https://imagemagick.org/) 
 
 Optional:
 
-This is only needed if you are testing out the `tess` method on the `OCR` class. It is currently experimental, and does not return any of the OCR'd data, but is much faster than tesseract.js.
+This is only needed if you are testing out the `tess` method on the `OCR` class.  This is much faster than the `recognize` method on the `OCR` class since it uses tesseract.js, but yeilds less information.
 
 * [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
 
@@ -39,20 +37,16 @@ async function main() {
     try {
 
         // Set the path to the pdf you want to OCR
-        const pdfPath = resolve(process.cwd() + '/test/data/pdfs/set1/Modeling High-Frequency Limit Order Book Dynamics with Support Vector Machines.pdf')
+        const pdfPath = '/path/to/my.pdf'
 
         // Set a destination directory for the pdf images
         const destinationDir = resolve(process.cwd() + '/tmp')
 
-        console.log('Generating images from PDF')
         // Convert a pdf to a series of images
         const generatedImages = await ocr.convertPdfToImages(pdfPath, destinationDir) 
-       
-        console.log('Doing OCR on first page')
-        // Run OCR on one of the generated images
-        await ocr.tess(generatedImages[0])
 
-        // The OCR'd text will also be saved next to the source image
+        // Run OCR on one of the generated images
+        const textFile = await ocr.tess(generatedImages[0])
 
     } catch (error) {
         throw error

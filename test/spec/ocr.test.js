@@ -42,6 +42,8 @@ describe('OCR Class', () => {
         const imagePaths = await ocr.convertPdfToImages(pdfPath, tmpDir)
 
         const { data } = await ocr.recognize(imagePaths[Math.floor(Math.random() * imagePaths.length)])
+        
+        rmdirSync(tmpDir, { recursive: true })
 
         chai.expect(data).to.have.keys([
             'text',
@@ -61,8 +63,16 @@ describe('OCR Class', () => {
             'symbols'
         ])
 
+    })
+
+    it('Should ocr an image using system tesseract', async () => {
+        const tmpDir = join(tmpDirBase, new Date().getTime().toString())
+        mkdirpSync(tmpDir)
+        const imagePaths = await ocr.convertPdfToImages(pdfPath, tmpDir)
+        const textFile = await ocr.tess(imagePaths[Math.floor(Math.random() * imagePaths.length)])
         rmdirSync(tmpDir, { recursive: true })
 
+        chai.expect(textFile).to.be.a('string')
     })
 
 })
