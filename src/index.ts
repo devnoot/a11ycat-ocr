@@ -1,9 +1,7 @@
-import { PDF } from './classes/pdf.class'
 import { OCR } from './classes/ocr.class'
 
-const AllycatOCR = {
+const A11yCat = {
     OCR: OCR,
-    PDF: PDF
 }
 
-export { AllycatOCR }
+export { A11yCat }

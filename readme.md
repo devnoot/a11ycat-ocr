@@ -6,8 +6,9 @@
 
 ## Dependencies
 * [ImageMagick 7](https://imagemagick.org/) 
+* [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
 
->IMPORTANT: `a11ycat-ocr` expects the ImageMagick tools to be available in your `PATH`
+>IMPORTANT: `a11ycat-ocr` expects the ImageMagick tools, as well as the `tesseract` binary to be available in your `PATH`
 
 
 
@@ -25,10 +26,10 @@ npm build
 2. Include the OCR class in your project
 
 ```javascript
-const { AllycatOCR } = require('./dist/index')
+const { A11yCat } = require('../../dist/index')
 const { resolve } = require('path')
 
-const ocr = new AllycatOCR.OCR()
+const ocr = new A11yCat.OCR()
 
 async function main() {
 
@@ -46,12 +47,7 @@ async function main() {
        
         console.log('Doing OCR on first page')
         // Run OCR on one of the generated images
-        const { data } = await ocr.recognize(generatedImages[0])
-
-        const foundText = data.text
-
-        // Log out the OCR'd text.
-        console.log(foundText)
+        await ocr.tess(generatedImages[0])
 
         // The OCR'd text will also be saved next to the source image
 

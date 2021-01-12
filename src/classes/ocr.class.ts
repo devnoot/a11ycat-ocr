@@ -20,18 +20,14 @@ class OCR {
      */
     public convertPdfToImages(pdfPath: string, destinationDir: string): Promise<string[]> {
         return new Promise((resolve, reject) => {
-
             try {
                 const src = pdfPath
                 const dest = destinationDir
                 const outFile = basename(pdfPath) + '-%02d' + '.png'
 
                 const defaultImageMagickArgs = [
-                    //'-density', '150',
+                    '-density', '150',
                     src,
-                    //'-fill', 'black',
-                    //'-fuzz', '30%',
-                    //'+opaque', '#FFFFFF',
                     '+adjoin',
                     join(dest, outFile)
                 ]
@@ -46,7 +42,7 @@ class OCR {
 
                 proc.on('exit', (code) => {
                     if (code && code > 0) {
-                        throw new Error(`Could not process file \n${pdfPath}, Received exit code ${code}`)
+                        reject(`\nCould not process file \n${pdfPath}\nReceived exit code ${code}`)
                     }
                     const createdFiles = readdirSync(dest).map(f => join(dest, f))
                     resolve(createdFiles)
@@ -59,7 +55,47 @@ class OCR {
             } catch (error) {
                 reject(error)
             }
+            
+        })
+    }
 
+    /**
+     * Performs OCR on an image by calling Tesseract from the host system
+     * @param imagePath The image path to perform OCR recognition on
+     */
+
+    public tess(imagePath: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            try {
+
+                const tesseractOpts = [
+                    imagePath,
+                    basename(imagePath),
+                    '-l', 'eng'
+                ]
+
+                const proc = spawn('tesseract', tesseractOpts)
+
+                proc.stdout.on('data', data => {
+                    if (process.env.NODE_ENV !== 'test') {
+                        console.log(dim(data.toString()))
+                    }
+                })
+
+                proc.on('exit', (code) => {
+                    if (code && code > 0) {
+                        reject(`Receieved error code ${code}`)
+                    }
+                    resolve(`Exited with code ${code}`)
+                })
+
+                proc.on('error', error => {
+                    throw error
+                })
+    
+            } catch (error) {
+                reject(error)
+            }
         })
     }
 
