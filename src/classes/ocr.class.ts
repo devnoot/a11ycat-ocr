@@ -61,6 +61,10 @@ class OCR {
 
     /**
      * Performs OCR on an image by calling Tesseract from the host system
+     *
+     * IMPORTANT: This function assumes that tesseract is installed and available in $PATH
+     * This function is also NOT COMPLETE
+     *
      * @param imagePath The image path to perform OCR recognition on
      */
 

@@ -27,7 +27,7 @@ describe('OCR Class', () => {
         pdfPath = join(setBase, files[fileIndex])
     })
 
-    it('Should convert a pdf from disk to a series of images', async () => {
+    it('Should write an image for each page in a PDF to disk', async () => {
         const tmpDir = join(tmpDirBase, new Date().getTime().toString())
         mkdirpSync(tmpDir)
         const imagePaths = await ocr.convertPdfToImages(pdfPath, tmpDir)
@@ -36,11 +36,11 @@ describe('OCR Class', () => {
         chai.expect(imagePaths).to.be.an('array')
     })
 
-    it('Should ocr an image', async () => {
+    it('Should ocr an image using tesseract.js', async () => {
         const tmpDir = join(tmpDirBase, new Date().getTime().toString())
         mkdirpSync(tmpDir)
         const imagePaths = await ocr.convertPdfToImages(pdfPath, tmpDir)
-        
+
         const { data } = await ocr.recognize(imagePaths[Math.floor(Math.random() * imagePaths.length)])
 
         chai.expect(data).to.have.keys([

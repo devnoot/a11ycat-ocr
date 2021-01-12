@@ -6,11 +6,14 @@
 
 ## Dependencies
 * [ImageMagick 7](https://imagemagick.org/) 
+
+Optional:
+
+This is only needed if you are testing out the `tess` method on the `OCR` class. It is currently experimental, and does not return any of the OCR'd data, but is much faster than tesseract.js.
+
 * [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
 
->IMPORTANT: `a11ycat-ocr` expects the ImageMagick tools, as well as the `tesseract` binary to be available in your `PATH`
-
-
+>IMPORTANT: `a11ycat-ocr` expects the ImageMagick tools to be availabe in `$PATH`. If you are testing the `tess` method on the `OCR` class, then `tesseract` must also be in `$PATH`
 
 ## Quick Start 
 
