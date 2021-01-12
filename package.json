@@ -1,14 +1,17 @@
 {
     "name": "a11ycat-ocr",
-    "version": "0.0.1",
+    "version": "0.0.2",
+    "source": "src/index.ts",
     "main": "dist/index.js",
     "author": "devnoot <devnoot@gmail.com>",
     "license": "MIT",
     "scripts": {
         "build": "./node_modules/.bin/tsc",
-        "start": "node ./dist/index",
+        "prebuild": "npm run clean",
         "test": "NODE_ENV=test mocha --timeout 0 ./test/spec/*.js",
-        "docs": "typedoc  --excludeNotExported"
+        "docs": "typedoc --excludeNotExported",
+        "clean": "rimraf ./dist && rimraf ./test/tmp && rimraf ./docs",
+        "deploy:docs": "npm run docs && gh-pages -d docs/ && npm run clean"
     },
     "devDependencies": {
         "@types/chalk": "^2.2.0",
@@ -18,12 +21,13 @@
         "@types/tesseract.js": "^0.0.2",
         "chai": "^4.2.0",
         "eslint": "^7.0.0",
+        "gh-pages": "^3.1.0",
         "mocha": "^7.2.0",
+        "rimraf": "^3.0.2",
         "typedoc": "^0.17.7",
         "typescript": "^3.9.3"
     },
     "dependencies": {
-        "canvas": "^2.6.1",
         "chalk": "^4.0.0",
         "fs-extra": "^9.0.0",
         "pdfjs-dist": "^2.3.200",

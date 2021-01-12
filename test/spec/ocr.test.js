@@ -1,9 +1,10 @@
 const { mkdirpSync, readdirSync, rmdirSync } = require('fs-extra')
 const { join } = require('path')
 const chai = require('chai')
-const expect = chai.expect
 
-const { OCR } = require('../../dist/classes/ocr.class')
+const { A11yCat } = require('../../dist/index')
+
+const OCR = A11yCat.OCR
 
 describe('OCR Class', () => {
 
@@ -16,7 +17,7 @@ describe('OCR Class', () => {
 
     beforeEach(() => {
         // Get a random pdf set from a directory
-        const pdfSets = readdirSync(pdfDataDir)
+        const pdfSets = readdirSync(pdfDataDir).filter(name => name !== ".DS_Store")
         const randomSet = pdfSets[Math.floor(Math.random() * pdfSets.length)]
 
         // Get a random pdf
@@ -30,17 +31,39 @@ describe('OCR Class', () => {
         const tmpDir = join(tmpDirBase, new Date().getTime().toString())
         mkdirpSync(tmpDir)
         const imagePaths = await ocr.convertPdfToImages(pdfPath, tmpDir)
+
         rmdirSync(tmpDir, { recursive: true })
-        imagePaths.should.be.an('array')
+
+        chai.expect(imagePaths).to.be.an('array')
     })
 
     it('Should ocr an image', async () => {
         const tmpDir = join(tmpDirBase, new Date().getTime().toString())
         mkdirpSync(tmpDir)
         const imagePaths = await ocr.convertPdfToImages(pdfPath, tmpDir)
+        
         const { data } = await ocr.recognize(imagePaths[Math.floor(Math.random() * imagePaths.length)])
+
+        chai.expect(data).to.have.keys([
+            'text',
+            'hocr',
+            'tsv',
+            'box',
+            'unlv',
+            'osd',
+            'confidence',
+            'blocks',
+            'psm',
+            'oem',
+            'version',
+            'paragraphs',
+            'lines',
+            'words',
+            'symbols'
+        ])
+
         rmdirSync(tmpDir, { recursive: true })
-        expect(data.text).to.be.a('string')
+
     })
 
 })

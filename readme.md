@@ -26,10 +26,10 @@ npm build
 2. Include the OCR class in your project
 
 ```javascript
-const { AllycatOCR } = require('./dist/index')
+const { A11yCat } = require('../../dist/index')
 const { resolve } = require('path')
 
-const ocr = new AllycatOCR.OCR()
+const ocr = new A11yCat.OCR()
 
 async function main() {
 
