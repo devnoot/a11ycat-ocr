@@ -33,7 +33,6 @@ describe('OCR Class', () => {
         const imagePaths = await ocr.convertPdfToImages(pdfPath, tmpDir)
 
         rmdirSync(tmpDir, { recursive: true })
-
         chai.expect(imagePaths).to.be.an('array')
     })
 
